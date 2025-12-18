@@ -56,8 +56,8 @@ from isaaclab_assets.robots.air4a import AIR4A_CFG
 # We do this by setting the stiffness and damping to zero.
 # The OSC will then directly command torques to the joints.
 for actuator_cfg in AIR4A_CFG.actuators.values():
-    actuator_cfg.stiffness = 0.0
-    actuator_cfg.damping = 0.0
+    actuator_cfg.stiffness = 1
+    actuator_cfg.damping = 1
 # We also disable gravity for the robot articulation, as the OSC will handle gravity compensation.
 AIR4A_CFG.spawn.rigid_props.disable_gravity = True
 

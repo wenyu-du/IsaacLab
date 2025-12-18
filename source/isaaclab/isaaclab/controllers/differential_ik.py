@@ -160,6 +160,9 @@ class DifferentialIKController:
             The target joint positions commands in shape (N, num_joints).
         """
         # compute the delta in joint-space
+        # print(f"Command type: {self.cfg.command_type}")  
+        # print(f"IK method: {self.cfg.ik_method}")  
+        # print(f"IK params: {self.cfg.ik_params}")
         if "position" in self.cfg.command_type:
             position_error = self.ee_pos_des - ee_pos
             jacobian_pos = jacobian[:, 0:3]

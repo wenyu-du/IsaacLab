@@ -28,8 +28,8 @@ class Air4aEnvCfg(DirectRLEnvCfg):
     episode_length_s = 20.0
     decimation = 2
     # TODO: Define action and observation spaces based on your robot
-    action_scale = 0.5
-    action_space = 12  # Example: 12 joints for air4a
+    action_scale = 50
+    action_space = 6  # Example: 6 joints for air4a
     observation_space = 87  # Example: Placeholder value
 
     # simulation
@@ -51,19 +51,33 @@ class Air4aEnvCfg(DirectRLEnvCfg):
     # scene
     scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=4096, env_spacing=4.0, replicate_physics=True)
 
-    # robot
-    robot: ArticulationCfg = AIR4A_CFG.replace(prim_path="/World/envs/env_.*/Robot")
+    # robot 
+    # 机械臂配置方法。CFG.replace(params = ...)
+    robot: ArticulationCfg = AIR4A_CFG.replace(
+        prim_path="/World/envs/env_.*/Robot",
+        # override stiffness and damping
+        # 添加配置项
+        actuators={"arm": AIR4A_CFG.actuators["arm"].replace(stiffness=100.0, damping=20.0),},
+        init_state=AIR4A_CFG.init_state.replace(joint_pos={
+            "air4a_joint1": .0,
+            "air4a_joint2":  .0, 
+            "air4a_joint3": .0,
+            "air4a_joint4": .0,
+            "air4a_joint5": .0,
+            "air4a_joint6":  .0
+        })
+    )
     # TODO: Define joint gears if necessary
-    joint_gears: list = [1.0] * 12
+    joint_gears: list = [1.0] * 6
 
     # TODO: Define reward weights
     # Rewards
     heading_weight: float = 0.5
     up_weight: float = 0.1
-    energy_cost_scale: float = 0.05
-    actions_cost_scale: float = 0.005
+    energy_cost_scale: float = 0.0  # Temporarily disabled for debugging
+    actions_cost_scale: float = 0.0  # Temporarily disabled for debugging
     alive_reward_scale: float = 0.5
-    dof_vel_scale: float = 0.2
+    dof_vel_scale: float = 0.0  # Temporarily disabled for debugging
 
     # TODO: Define termination conditions
     # Terminations
